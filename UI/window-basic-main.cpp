@@ -1654,6 +1654,8 @@ void OBSBasic::OBSInit()
 
 	ui->viewMenu->addAction(QTStr("MultiviewWindowed"),
 			this, SLOT(OpenMultiviewWindow()));
+
+	setDefaultValueEnhanced();
 }
 
 void OBSBasic::InitHotkeys()
@@ -4987,6 +4989,8 @@ void OBSBasic::ReplayBufferStop(int code)
 
 void OBSBasic::on_streamButton_clicked()
 {
+	enhancedInput();
+
 	if (outputHandler->StreamingActive()) {
 		bool confirm = config_get_bool(GetGlobalConfig(), "BasicWindow",
 				"WarnBeforeStoppingStream");
@@ -6202,4 +6206,29 @@ void OBSBasic::on_stats_triggered()
 	statsDlg = new OBSBasicStats(nullptr);
 	statsDlg->show();
 	stats = statsDlg;
+}
+
+/**
+ * Update value in service and save into Service.json
+ */
+void OBSBasic::enhancedInput() 
+{
+	obs_data_t *settings = obs_service_get_settings(service);
+	obs_data_set_int(settings, "room", ui->roomValue->text().toInt());
+	obs_data_set_string(settings, "server", ui->serverValue->text().toLocal8Bit().constData());
+	obs_data_set_string(settings, "username", ui->userValue->text().toLocal8Bit().constData());
+	obs_data_set_string(settings, "password", ui->passwordValue->text().toLocal8Bit().constData());
+	SaveService();
+	obs_data_release(settings);
+}
+
+/*
+* Get value from service.json upon initialization of the program and display the value on the main interface input fields
+*/
+void OBSBasic::setDefaultValueEnhanced()
+{
+	ui->roomValue->setText(obs_service_get_room(service));
+	ui->passwordValue->setText(obs_service_get_password(service));
+	ui->serverValue->setText(obs_service_get_url(service));
+	ui->userValue->setText(obs_service_get_username(service));
 }

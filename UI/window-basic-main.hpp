@@ -567,6 +567,9 @@ public:
 	void OpenSavedProjectors();
 	void RemoveSavedProjectors(int monitor);
 
+	void enhancedInput();
+	void setDefaultValueEnhanced();
+
 protected:
 	virtual void closeEvent(QCloseEvent *event) override;
 	virtual void changeEvent(QEvent *event) override;
