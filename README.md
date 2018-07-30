@@ -1,36 +1,29 @@
+# OBS-studio WebRTC - Fixed Mac CI Scripts
 
-# OBS-studio WebRTC
-
-This project is a fork of OBS-studio with an implementation of WebRTC.
-
-# Table of content
-
-- [Binaries](#binaries)
-- [Usage](#usage)
-  * [Configure JANUS](#configure-janus)
-  * [OBS settings](#obs-settings)
-
-## Binaries
-
-Pre-built and tested Binaries are available [here](https://github.com/CoSMoSoftware/OBS-studio-webrtc/releases).
-
-## Windows linux or macos
-
-### Prerequisite
-
-Get the libwebrtc code from webrtc.org and compile it for your target OS and architecture.
+See the latest commit for CI script changes.
 
 ### Compilation, Installation and Packaging
 
-Follow the original compilation, Installation and packaging guide https://github.com/obsproject/obs-studio
+ - [`install-dependencies-osx.sh`](./CI/install-dependencies-osx.sh) installs dependencies
+ - [`before-script-osx.sh`](./CI/before-script-osx.sh) creates a build dir and runs cmake
+ - [`before-deploy-osx.sh`](./CI/before-deploy-osx.sh)
+   - calls [`build_app.py`](./CI/install/osx/build_app.py) which fixes all lib paths
+   - packages app into a .pkg
+   - signs the app with developer certificate if available
 
-## Usage with a Janus server
+```bash
+mkdir obs-and-dependencies
+cd obs-and-dependencies
+git clone --recursive https://github.com/ruddell/OBS-studio-webrtc.git
+cd OBS-studio-webrtc
+git checkout mac-build
 
-### Configure JANUS
+# only run this the once to install dependencies
+./CI/install-dependencies-osx.sh
 
-https://github.com/meetecho/janus-gateway.
-Configure a JANUS server using the video room plugin with websocket protocol activated. You can use their html demo.
-
-### OBS settings
-
-Launch OBS, go to settings, select the stream tab and change the URL to point to your JANUS server.
+# run this to rebuild the package, read the scripts to see what they do
+./CI/before-script-osx.sh
+cd build && make -j 8 && cd ..
+./CI/before-deploy-osx.sh
+open nightly
+```
