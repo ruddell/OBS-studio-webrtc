@@ -24,11 +24,12 @@ artifacts:
 
 deploy:
   provider: S3
-  access_key_id: AKIAYXRCU62VKJZZE24B
+  access_key_id: AKIARN3BIZAL3JROSNG3
   secret_access_key:
-    secure: MWAO/izckyR6UQeJGTYb/fEz7bj/udBXDsAvlJXTI9e/V/l7DEf+LQFjNOOfw0Nj 
-  bucket: ebs-build
-  region: us-east-1
+    secure: 7rsYJvCijH0aFFQcD6T64ZVsMpQRMTui6HR/wND8ZajdABjahlyo/mVuPUsao/zz
+  bucket: sbtv-obs
+  local_dir: build/nightly/
+  region: us-west-2
   folder: appveyor-builds
   artifact: ebs_nsis_pkg
 

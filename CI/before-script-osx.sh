@@ -12,6 +12,6 @@ cmake \
 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1 \
 -Dlibwebrtc_DIR=/tmp/libWebRTC-73.0-x64-Rel-COMMUNITY-BETA/cmake \
 -DBUILD_BROWSER=false \
--DOBS_WEBRTC_VENDOR_NAME=Evercast \
 ..
+#-DOBS_WEBRTC_VENDOR_NAME=Evercast \
 
